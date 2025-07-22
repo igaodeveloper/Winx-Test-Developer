@@ -21,7 +21,7 @@
     "framer-motion": "^12.23.6",
     "gsap": "^3.13.0",
     "morgan": "^1.10.1",
-    "nuxt": "^3.10.0",
+    "nuxt": "^3.17.7",
     "reflect-metadata": "^0.2.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",

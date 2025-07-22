@@ -1,4 +1,6 @@
-import { defineNuxtPlugin, useRuntimeConfig } from '#imports'
+import { defineNuxtPlugin } from 'nuxt/app'
+import { useRuntimeConfig } from 'nuxt/app'
+
 import axios from 'axios'
 import type { NuxtApp } from 'nuxt/app'
 import { useLoading } from '~/composables/useLoading'
@@ -8,7 +10,7 @@ export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
   const { start, stop } = useLoading()
 
   const instance = axios.create({
-    baseURL: config.public.apiBase || 'http://localhost:3000/api',
+    baseURL: config.public.apiBase as string || 'http://localhost:3000/api',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -17,7 +19,7 @@ export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
   // Interceptor para requests
   instance.interceptors.request.use((config) => {
     start()
-    return config
+    return config as any
   })
 
   // Interceptor para responses
