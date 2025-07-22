@@ -9,10 +9,10 @@ import '@/assets/styles/main.css'
 import GlobalLoader from '../components/common/GlobalLoader.vue'
 import Toast from '../components/common/Toast.vue'
 import { useToast } from '../composables/useToast'
-import { ref, watch } from 'vue'
+import { useLoading } from '../composables/useLoading'
 
 const { toast, clearToast } = useToast()
-const globalLoading = ref(false)
+const { loading: globalLoading, start: startLoading, stop: stopLoading } = useLoading()
 
 // Exemplo: escutar loading global de requests (pode ser customizado)
 // watchEffect(() => {

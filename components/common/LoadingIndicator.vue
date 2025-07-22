@@ -8,11 +8,9 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
-  loading: boolean
-}
+import { useLoading } from '~/composables/useLoading'
 
-const props = defineProps<Props>()
+const { loading } = useLoading()
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import type { App } from 'vue'
 
 export default {

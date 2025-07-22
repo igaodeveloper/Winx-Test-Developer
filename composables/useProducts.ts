@@ -52,8 +52,9 @@ export function useProducts() {
       const axios = $axios as AxiosInstance
       const { data } = await axios.get('/categories')
       categories.value = data
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching categories:', err)
+      error.value = err?.response?.data?.message || 'Erro ao carregar categorias'
       categories.value = []
     } finally {
       setLoadingCategories(false)

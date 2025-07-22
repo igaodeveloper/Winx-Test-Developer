@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="error" class="text-red-500 mb-4">
+      {{ error }}
+    </div>
     <ProductFilters
       :categories="categories"
       :loading="loading"
