@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_API_URL || 'http://localhost:3001/api'
+    }
+  },
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   postcss: {

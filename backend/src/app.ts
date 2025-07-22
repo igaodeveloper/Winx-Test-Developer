@@ -7,6 +7,7 @@ dotenv.config();
 
 import { errorHandler } from './middlewares/errorHandler';
 import productRoutes from './routes/productRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 import { setupSwagger } from './docs/swagger';
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/products', productRoutes);
+app.use('/categories', categoryRoutes);
 
 app.use(errorHandler);
 

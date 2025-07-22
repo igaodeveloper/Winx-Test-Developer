@@ -1,7 +1,8 @@
 import { Ref, ref } from 'vue'
 import type { Product } from '../types/Product'
 import { useNuxtApp } from 'nuxt/app'
-import type { AxiosInstance } from 'axios/'
+import type { AxiosInstance } from 'axios'
+import { AxiosError } from 'axios'
 import { useLoading } from './useLoading'
 
 export function useProducts() {
@@ -35,8 +36,13 @@ export function useProducts() {
       const { data } = await axios.get('/products', { params })
       products.value = data.items
       totalPages.value = data.totalPages
-    } catch (err: any) {
-      error.value = err?.response?.data?.message || 'Erro ao buscar produtos.'
+    } catch (err) {
+      const axiosError = err as AxiosError<{ message?: string }>
+      console.error('Error fetching products:', axiosError)
+      error.value = axiosError.response?.data?.message || 
+        axiosError.response?.statusText || 
+        axiosError.message || 
+        'Erro ao buscar produtos. Por favor, tente novamente mais tarde.'
     } finally {
       setLoadingProducts(false)
     }
@@ -51,6 +57,17 @@ export function useProducts() {
       const { $axios } = useNuxtApp()
       const axios = $axios as AxiosInstance
       const { data } = await axios.get('/categories')
+      
+      // Valida a resposta
+      if (!data || !Array.isArray(data)) {
+        throw new Error('Resposta da API inválida')
+      }
+      
+      // Atualiza as categorias
+      categories.value = data.map(category => ({
+        id: category.id,
+        name: category.name
+      }))
       categories.value = data
     } catch (err: any) {
       console.error('Error fetching categories:', err)
