@@ -2,7 +2,7 @@
   <form @submit.prevent="onSubmit" class="space-y-4">
     <BaseInput v-model="form.name" label="Nome" :error="errors?.name" required />
     <CategorySelect v-model="form.categoryId" :categories="categories" label="Categoria" :error="errors?.categoryId" :loading="loadingCategories" required />
-    <BaseInput v-model="form.imageUrl" label="URL da Imagem" :error="errors?.imageUrl" type="url" required />
+    <ImageUpload v-model="form.imageFile" label="Imagem do Produto" :error="errors?.imageUrl" required />
     <PriceRangeSlider v-model="form.price" :min="0" :max="10000" :step="0.01" label="Preço" />
     <div class="flex gap-2 justify-end">
       <BaseButton type="submit" :loading="loading">{{ submitLabel }}</BaseButton>
@@ -17,7 +17,9 @@ import BaseInput from '../../components/common/BaseInput.vue'
 import BaseButton from '../../components/common/BaseButton.vue'
 import CategorySelect from '../../components/common/CategorySelect.vue'
 import PriceRangeSlider from '../../components/common/PriceRangeSlider.vue'
+import ImageUpload from '../../components/common/ImageUpload.vue'
 import type { Product } from '../../types/Product'
+import type { File } from 'vue/types/jsx'
 
 // Props do formulário
 const props = defineProps<{
@@ -35,7 +37,7 @@ const emit = defineEmits(['update:modelValue', 'submit', 'cancel'])
 const form = reactive({
   name: props.modelValue?.name || '',
   categoryId: props.modelValue?.categoryId || '',
-  imageUrl: props.modelValue?.imageUrl || '',
+  imageFile: props.modelValue?.imageFile || null,
   price: props.modelValue?.price || 0
 })
 
