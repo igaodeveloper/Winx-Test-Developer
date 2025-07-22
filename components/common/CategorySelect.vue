@@ -1,29 +1,29 @@
 <template>
-  <div>
-    <label v-if="label" :for="id" class="block mb-1 font-medium text-gray-700">{{ label }}</label>
-    <select
-      :id="id"
-      v-bind="$attrs"
-      :class="[
-        'w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 transition',
-        error ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-primary-200',
-        disabled ? 'bg-gray-100 cursor-not-allowed' : ''
-      ]"
-      :disabled="disabled || loading"
-      v-model="selectValue"
-    >
-      <option value="" disabled>Selecione uma categoria</option>
-      <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
-    </select>
-    <div v-if="loading" class="flex items-center justify-center w-full h-8 mt-1">
-      <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+  <LoadingIndicator :loading="loading">
+    <div>
+      <label v-if="label" :for="id" class="block mb-1 font-medium text-gray-700">{{ label }}</label>
+      <select
+        :id="id"
+        v-bind="$attrs"
+        :class="[
+          'w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 transition',
+          error ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-primary-200',
+          disabled ? 'bg-gray-100 cursor-not-allowed' : ''
+        ]"
+        :disabled="disabled || loading"
+        v-model="selectValue"
+      >
+        <option value="" disabled>Selecione uma categoria</option>
+        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+      </select>
+      <p v-if="error" class="text-xs text-red-500 mt-1">{{ error }}</p>
     </div>
-    <p v-if="error" class="text-xs text-red-500 mt-1">{{ error }}</p>
-  </div>
+  </LoadingIndicator>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import LoadingIndicator from './LoadingIndicator.vue'
 
 interface Category {
   id: string | number
@@ -46,4 +46,4 @@ const selectValue = ref(props.modelValue)
 
 watch(() => props.modelValue, val => selectValue.value = val)
 watch(selectValue, val => emit('update:modelValue', val))
-</script> 
+</script>

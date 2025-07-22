@@ -1,14 +1,14 @@
-import { defineNuxtPlugin } from '#app'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import type { App } from 'vue'
 
-gsap.registerPlugin(ScrollTrigger)
-
-export default defineNuxtPlugin(() => {
-  return {
-    provide: {
-      gsap,
-      ScrollTrigger
-    }
+export default {
+  name: 'gsap',
+  install(vueApp: App) {
+    // Register ScrollTrigger with GSAP
+    gsap.registerPlugin(ScrollTrigger)
+    
+    vueApp.config.globalProperties.$gsap = gsap
+    vueApp.config.globalProperties.$scrollTrigger = ScrollTrigger
   }
-})
+}

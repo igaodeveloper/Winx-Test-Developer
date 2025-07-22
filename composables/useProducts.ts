@@ -2,20 +2,20 @@ import { Ref, ref } from 'vue'
 import type { Product } from '../types/Product'
 import { useNuxtApp } from 'nuxt/app'
 import type { AxiosInstance } from 'axios/'
+import { useLoading } from './useLoading'
 
 export function useProducts() {
   // Lista de produtos
   const products: Ref<Product[]> = ref([])
   // Total de páginas para paginação
   const totalPages: Ref<number> = ref(1)
-  // Estado de carregamento da listagem
-  const loading: Ref<boolean> = ref(false)
-  // Mensagem de erro, se houver
-  const error: Ref<string | null> = ref(null)
+  // Loading states
+  const { loading: loadingProducts, setLoading: setLoadingProducts } = useLoading()
+  const { loading: loadingCategories, setLoading: setLoadingCategories } = useLoading()
   // Lista de categorias disponíveis
   const categories: Ref<{ id: string | number, name: string }[]> = ref([])
-  // Estado de carregamento das categorias
-  const loadingCategories: Ref<boolean> = ref(false)
+  // Mensagem de erro, se houver
+  const error: Ref<string | null> = ref(null)
 
   /**
    * Busca produtos da API com filtros, paginação e busca
@@ -27,7 +27,7 @@ export function useProducts() {
     categoryId?: string | number
     price?: number
   } = {}): Promise<void> {
-    loading.value = true
+    setLoadingProducts(true)
     error.value = null
     try {
       const { $axios } = useNuxtApp()
@@ -38,7 +38,7 @@ export function useProducts() {
     } catch (err: any) {
       error.value = err?.response?.data?.message || 'Erro ao buscar produtos.'
     } finally {
-      loading.value = false
+      setLoadingProducts(false)
     }
   }
 
@@ -46,7 +46,7 @@ export function useProducts() {
    * Busca categorias disponíveis para filtro
    */
   async function fetchCategories(): Promise<void> {
-    loadingCategories.value = true
+    setLoadingCategories(true)
     try {
       const { $axios } = useNuxtApp()
       const axios = $axios as AxiosInstance
@@ -55,9 +55,8 @@ export function useProducts() {
     } catch (err) {
       console.error('Error fetching categories:', err)
       categories.value = []
-      loadingCategories.value = false
     } finally {
-      loadingCategories.value = false
+      setLoadingCategories(false)
     }
   }
 
@@ -68,7 +67,7 @@ export function useProducts() {
   return {
     products,
     totalPages,
-    loading,
+    loading: loadingProducts,
     error,
     categories,
     loadingCategories,
