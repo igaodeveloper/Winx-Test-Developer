@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50">
+  <div class="min-h-screen flex flex-col">
     <nav class="bg-white shadow-md py-4 px-6 flex items-center justify-between">
       <NuxtLink to="/" class="text-2xl font-bold text-blue-600">Product CRUD</NuxtLink>
       <div class="flex gap-4">

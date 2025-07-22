@@ -1,13 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx,vue,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,vue,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,vue,mdx}",
-    "./layouts/**/*.{js,ts,jsx,tsx,vue,mdx}",
-    "./plugins/**/*.{js,ts,jsx,tsx,vue,mdx}",
-    "./nuxt.config.{js,ts}",
-    "./app.vue"
+    "./components/**/*.{vue,js,ts,jsx,tsx}",
+    "./layouts/**/*.vue",
+    "./pages/**/*.vue",
+    "./app.vue",
+    "./nuxt.config.{js,ts}"
   ],
   theme: {
     extend: {
