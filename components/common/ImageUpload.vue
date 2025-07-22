@@ -67,6 +67,8 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue'
+
 import { ref, computed } from 'vue'
 import { useToast } from '../../composables/useToast'
 
@@ -84,7 +86,7 @@ const preview = ref<string | null>(null)
 const error = ref<string | null>(null)
 
 // Atualiza a prévia quando o arquivo muda
-watch(() => props.modelValue, (newFile) => {
+watch(() => props.modelValue, (newFile: File | null) => {
   error.value = null
   if (newFile) {
     const reader = new FileReader()

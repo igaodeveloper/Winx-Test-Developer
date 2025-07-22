@@ -9,7 +9,7 @@
     :disabled="disabled || loading"
     v-bind="$attrs"
   >
-    <span v-if="loading" class="animate-spin mr-2 w-4 h-4 border-2 border-t-transparent border-white rounded-full"></span>
+    <span v-if="loading" class="animate-spin mr-2 w-6 h-6 border-4 border-t-transparent border-white rounded-full"></span>
     <slot />
   </button>
 </template>

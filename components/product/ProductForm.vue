@@ -19,7 +19,14 @@ import CategorySelect from '../../components/common/CategorySelect.vue'
 import PriceRangeSlider from '../../components/common/PriceRangeSlider.vue'
 import ImageUpload from '../../components/common/ImageUpload.vue'
 import type { Product } from '../../types/Product'
-import type { File } from 'vue/types/jsx'
+
+// Define form type
+interface FormType {
+  name: string
+  categoryId: string | number
+  imageFile: File | undefined
+  price: number
+}
 
 // Props do formulário
 const props = defineProps<{
@@ -33,11 +40,11 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue', 'submit', 'cancel'])
 
-// Estado reativo do formulário
-const form = reactive({
+// Initialize form with proper types
+const form = reactive<FormType>({
   name: props.modelValue?.name || '',
   categoryId: props.modelValue?.categoryId || '',
-  imageFile: props.modelValue?.imageFile || null,
+  imageFile: props.modelValue?.imageFile ?? undefined,
   price: props.modelValue?.price || 0
 })
 

@@ -10,13 +10,31 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "types": ["nuxt"],
+    "types": ["nuxt", "@nuxt/types", "@nuxtjs/composition-api"],
     "baseUrl": ".",
     "paths": {
-      "#app": [".nuxt/app/index.d.ts"],
-      "#imports": [".nuxt/imports.d.ts"],
-      "#build": [".nuxt/types/build.d.ts"]
-    }
+      "~/*": ["./*"],
+      "~": ["."],
+      "@/*": ["./*"],
+      "@": ["."],
+      "#app": ["./node_modules/@nuxt/types/app"],
+      "#build": ["./*"],
+      "#components": ["./*"],
+      "#composables": ["./*"],
+      "#imports": ["./*"],
+      "#pages": ["./*"],
+      "#pinia": ["./*"],
+      "#store": ["./*"],
+      "#app/*": ["./*"],
+      "#build/*": ["./*"],
+      "#components/*": ["./*"],
+      "#composables/*": ["./*"],
+      "#imports/*": ["./*"],
+      "#pages/*": ["./*"],
+      "#pinia/*": ["./*"],
+      "#store/*": ["./*"]
+    },
+    "skipLibCheck": true
   },
   "exclude": ["node_modules", ".output", ".nuxt"],
   "include": ["**/*.ts", "**/*.tsx", "**/*.vue"]

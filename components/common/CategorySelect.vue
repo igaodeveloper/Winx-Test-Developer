@@ -15,7 +15,9 @@
       <option value="" disabled>Selecione uma categoria</option>
       <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
     </select>
-    <div v-if="loading" class="text-xs text-gray-400 mt-1">Carregando categorias...</div>
+    <div v-if="loading" class="flex items-center justify-center w-full h-8 mt-1">
+      <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+    </div>
     <p v-if="error" class="text-xs text-red-500 mt-1">{{ error }}</p>
   </div>
 </template>
