@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'inline-flex items-center justify-center font-semibold rounded transition focus:outline-none focus:ring-2 focus:ring-offset-2',
+      'inline-flex items-center justify-center font-semibold rounded-lg transform transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 hover:scale-[1.02] hover:shadow-md active:scale-[0.98] active:shadow-sm',
       variantClass,
       loading ? 'opacity-70 cursor-wait' : '',
       disabled ? 'opacity-50 cursor-not-allowed' : ''
@@ -26,11 +26,26 @@ const props = defineProps<{
 const variantClass = computed(() => {
   switch (props.variant) {
     case 'secondary':
-      return 'bg-gray-200 text-gray-800 hover:bg-gray-300';
+      return [
+        'bg-gray-200 text-gray-800 hover:bg-gray-300',
+        'hover:scale-[1.02] hover:shadow-md',
+        'active:scale-[0.98] active:shadow-sm',
+        'transition-all duration-200 ease-out'
+      ].join(' ');
     case 'danger':
-      return 'bg-red-600 text-white hover:bg-red-700';
+      return [
+        'bg-red-600 text-white hover:bg-red-700',
+        'hover:scale-[1.02] hover:shadow-md',
+        'active:scale-[0.98] active:shadow-sm',
+        'transition-all duration-200 ease-out'
+      ].join(' ');
     default:
-      return 'bg-primary-600 text-white hover:bg-primary-700';
+      return [
+        'bg-primary-600 text-white hover:bg-primary-700',
+        'hover:scale-[1.02] hover:shadow-md',
+        'active:scale-[0.98] active:shadow-sm',
+        'transition-all duration-200 ease-out'
+      ].join(' ');
   }
 })
 </script>

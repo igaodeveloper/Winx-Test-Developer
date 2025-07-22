@@ -9,7 +9,11 @@
       />
       <button 
         @click="removeImage"
-        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors"
+        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center 
+        hover:bg-red-600 transition-all duration-200
+        hover:scale-110 hover:shadow-lg
+        active:scale-95 active:shadow-md
+      " data-cy="remove-image-button"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -19,12 +23,15 @@
 
     <!-- Upload Area -->
     <div 
-      class="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-all duration-300 relative"
+      class="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer 
+      transition-all duration-300 ease-in-out
+      hover:border-blue-500 hover:shadow-md hover:scale-[1.01]
+      group"
       :class="{ 'bg-blue-50 border-blue-100': preview }"
     >
       <div class="mb-4">
         <svg 
-          class="w-12 h-12 text-gray-400"
+          class="w-12 h-12 text-gray-400 group-hover:text-blue-500 transition-colors duration-300"
           fill="none" 
           stroke="currentColor" 
           viewBox="0 0 24 24"
@@ -38,9 +45,9 @@
         </svg>
       </div>
       <div class="text-center text-gray-600">
-        <p class="text-lg font-medium">Arraste e solte ou clique para fazer upload</p>
-        <p class="text-sm text-gray-500 mt-1">Formatos suportados: JPG, PNG, GIF</p>
-        <p class="text-xs text-gray-400">Tamanho máximo: 5MB</p>
+        <p class="text-lg font-medium transition-all duration-300 group-hover:text-blue-600">Arraste e solte ou clique para fazer upload</p>
+        <p class="text-sm text-gray-500 mt-1 transition-all duration-300 group-hover:text-gray-700">Formatos suportados: JPG, PNG, GIF</p>
+        <p class="text-xs text-gray-400 transition-all duration-300 group-hover:text-gray-500">Tamanho máximo: 5MB</p>
       </div>
       <input 
         type="file" 
