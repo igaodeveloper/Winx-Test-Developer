@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["ESNext", "DOM"],
+    "esModuleInterop": true,
+    "strict": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "types": ["nuxt"],
+    "baseUrl": ".",
+    "paths": {
+      "#app": [".nuxt/app/index.d.ts"],
+      "#imports": [".nuxt/imports.d.ts"],
+      "#build": [".nuxt/types/build.d.ts"]
+    }
+  },
+  "exclude": ["node_modules", ".output", ".nuxt"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.vue"]
+}
