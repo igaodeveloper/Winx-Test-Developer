@@ -1,6 +1,9 @@
 import { ProductRepository } from '../repositories/ProductRepository';
 import { validateOrReject } from 'class-validator';
 import { CreateProductDto, UpdateProductDto } from '../utils/ProductDto';
+import { Product } from '../utils/Product';
+import { Category } from '../models/Category';
+import { webSocketService } from '../server';
 
 export class ProductService {
   private repo = new ProductRepository();
@@ -16,16 +19,22 @@ export class ProductService {
   async create(data: any) {
     const dto = new CreateProductDto(data);
     await validateOrReject(dto);
-    return this.repo.create(dto);
+    const product = await this.repo.create(dto);
+    webSocketService.broadcastProductUpdate();
+    return product;
   }
 
   async update(id: string, data: any) {
     const dto = new UpdateProductDto(data);
     await validateOrReject(dto);
-    return this.repo.update(id, dto);
+    const product = await this.repo.update(id, dto);
+    webSocketService.broadcastProductUpdate();
+    return product;
   }
 
   async remove(id: string) {
-    return this.repo.remove(id);
+    const product = await this.repo.remove(id);
+    webSocketService.broadcastProductUpdate();
+    return product;
   }
-} 
+}
