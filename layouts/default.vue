@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <nav class="bg-yellow-400 shadow-md py-4 px-6 flex items-center justify-between transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-      <NuxtLink to="/" class="text-2xl font-bold text-gray-800 transition-transform duration-300 hover:scale-110">Product CRUD</NuxtLink>
+    <nav class="bg-yellow-400 shadow-md py-4 px-8 flex items-center justify-between transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      <Logo class="ml-auto mr-4" />
       <div class="flex gap-4">
         <NuxtLink to="/" class="bg-white px-4 py-2 rounded-full text-gray-800 hover:bg-gray-100 transition-all duration-300 hover:shadow-md hover:scale-[1.02] transform hover:translate-y-[-2px]">Produtos</NuxtLink>
         <NuxtLink to="/products/create" class="bg-white px-4 py-2 rounded-full text-gray-800 hover:bg-gray-100 transition-all duration-300 hover:shadow-md hover:scale-[1.02] transform hover:translate-y-[-2px]">Novo Produto</NuxtLink>
@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+import Logo from '~/components/common/Logo.vue'
 // Layout base, sem lógica adicional
 </script>
 
