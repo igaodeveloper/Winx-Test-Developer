@@ -1,9 +1,11 @@
-import { Ref, ref } from 'vue'
 import type { Product } from '../types/Product'
 import { useNuxtApp } from 'nuxt/app'
 import type { AxiosInstance } from 'axios'
 import { AxiosError } from 'axios'
 import { useLoading } from './useLoading'
+
+import { onMounted, onUnmounted, ref, Ref } from 'vue'
+import { useWebSocket } from './useWebSocket'
 
 export function useProducts() {
   // Lista de produtos
@@ -17,6 +19,9 @@ export function useProducts() {
   const categories: Ref<{ id: string | number, name: string }[]> = ref([])
   // Mensagem de erro, se houver
   const error: Ref<string | null> = ref(null)
+
+  // WebSocket
+  const { socket, isConnected } = useWebSocket()
 
   /**
    * Busca produtos da API com filtros, paginação e busca
@@ -77,6 +82,17 @@ export function useProducts() {
       setLoadingCategories(false)
     }
   }
+
+  // Configura o listener WebSocket para atualizações
+  onMounted(() => {
+    if (socket.value) {
+      socket.value.onmessage = (event) => {
+        if (event.data === 'productUpdate') {
+          fetchProducts()
+        }
+      }
+    }
+  })
 
   // Carregar categorias ao iniciar
   fetchCategories()
