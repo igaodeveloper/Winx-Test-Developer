@@ -8,6 +8,7 @@ export interface Product {
   categoryId: string | number
   price: number
   imageUrl: string
+  description: string
   imageFile?: File
   createdAt?: string
   updatedAt?: string

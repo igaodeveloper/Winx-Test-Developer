@@ -110,48 +110,78 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRoute, navigateTo } from 'nuxt/app'
-import BaseButton from '../../components/common/BaseButton.vue'
-import DeleteConfirmModal from '../../components/common/DeleteConfirmModal.vue'
-import { useProduct } from '../../composables/useProduct'
-import { useDeleteProduct } from '../../composables/useDeleteProduct'
-import { useToast } from '../../composables/useToast'
-import { motion } from 'framer-motion/vue'
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useProducts } from '~/composables/useProducts'
+import { useProductOperations } from '~/composables/useProductOperations'
+import { useToast } from '~/composables/useToast'
+import { motion } from 'framer-motion'
+import type { Product } from '~/types/Product'
 
-// Rota e ID do produto
 const route = useRoute()
-const id = route.params.id as string
-// Composable de produto
-const { product, loading, fetchProduct } = useProduct()
-// Composable de exclusão
-const { deleteProduct: deleteProductApi, loading: deleting, error: deleteError } = useDeleteProduct()
-// Toast para feedback visual
+const router = useRouter()
+const { products, loading: productsLoading, error: productsError } = useProducts()
+const { deleteProduct, updateProduct } = useProductOperations()
 const { showToast } = useToast()
-// Modal de confirmação
+
+const product = ref<Product | null>(null)
+const loading = ref(true)
+const deleting = ref(false)
 const showDeleteModal = ref(false)
 
-/**
- * Navega para edição
- */
-function goToEdit() {
-  navigateTo(`/products/${id}/edit`)
-}
-
-/**
- * Exclui produto e mostra feedback visual
- */
-async function deleteProduct() {
-  const success = await deleteProductApi(id)
-  showDeleteModal.value = false
-  if (success) {
-    showToast('Produto excluído com sucesso!', 'success')
-    navigateTo('/')
-  } else if (deleteError.value) {
-    showToast(deleteError.value, 'error')
+// Busca o produto específico
+const fetchProduct = async () => {
+  try {
+    const productId = parseInt(route.params.id as string)
+    const foundProduct = products.value.find(p => p.id === productId)
+    if (foundProduct) {
+      product.value = foundProduct
+    } else {
+      throw new Error('Produto não encontrado')
+    }
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Erro ao buscar produto'
+    showToast(errorMessage, 'error')
+  } finally {
+    loading.value = false
   }
 }
 
-// Inicialização: busca produto ao carregar
-fetchProduct(id)
-</script> 
+// Navega para a página de edição
+const goToEdit = () => {
+  router.push(`/products/${route.params.id}/edit`)
+}
+
+// Confirma a exclusão do produto
+const confirmDelete = async () => {
+  try {
+    deleting.value = true
+    if (product.value) {
+      await deleteProduct(product.value.id)
+      showToast('Produto excluído com sucesso!', 'success')
+      router.push('/')
+    }
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Erro ao excluir produto'
+    showToast(errorMessage, 'error')
+  } finally {
+    deleting.value = false
+    showDeleteModal.value = false
+  }
+}
+
+// Atualiza o produto
+const updateProductHandler = async (updatedProduct: Product) => {
+  try {
+    await updateProduct(updatedProduct)
+    showToast('Produto atualizado com sucesso!', 'success')
+    router.push(`/products/${updatedProduct.id}`)
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Erro ao atualizar produto'
+    showToast(errorMessage, 'error')
+  }
+}
+
+// Carrega os dados quando o componente é montado
+onMounted(() => fetchProduct())
+</script>

@@ -3,6 +3,7 @@ import { useNuxtApp } from 'nuxt/app'
 import type { AxiosInstance } from 'axios'
 import { AxiosError } from 'axios'
 import { useLoading } from './useLoading'
+import { mockProducts } from './mockProducts'
 
 import { onMounted, onUnmounted, ref, Ref } from 'vue'
 import { useWebSocket } from './useWebSocket'
@@ -36,18 +37,12 @@ export function useProducts() {
     setLoadingProducts(true)
     error.value = null
     try {
-      const { $axios } = useNuxtApp()
-      const axios = $axios as AxiosInstance
-      const { data } = await axios.get('/products', { params })
-      products.value = data.items
-      totalPages.value = data.totalPages
+      // Using mock data for testing
+      products.value = mockProducts
+      totalPages.value = 1
     } catch (err) {
-      const axiosError = err as AxiosError<{ message?: string }>
-      console.error('Error fetching products:', axiosError)
-      error.value = axiosError.response?.data?.message || 
-        axiosError.response?.statusText || 
-        axiosError.message || 
-        'Erro ao buscar produtos. Por favor, tente novamente mais tarde.'
+      console.error('Error fetching products:', err)
+      error.value = 'Erro ao buscar produtos. Por favor, tente novamente mais tarde.'
     } finally {
       setLoadingProducts(false)
     }
