@@ -7,19 +7,35 @@
     <p class="text-sm text-gray-500 mb-2 truncate">{{ product.category }}</p>
     <div class="font-bold text-primary-600 text-xl mb-3">R$ {{ product.price.toFixed(2) }}</div>
     <div class="mt-auto flex gap-2">
-      <BaseButton variant="primary" @click="$emit('details', product)">Detalhes</BaseButton>
-      <BaseButton variant="secondary" @click="$emit('edit', product)">Editar</BaseButton>
-      <BaseButton variant="danger" @click="$emit('delete', product)">Excluir</BaseButton>
+      <BaseButton 
+        variant="primary" 
+        @click="handleDetails(product)"
+        :disabled="loading"
+        >Detalhes</BaseButton>
+      <BaseButton 
+        variant="secondary" 
+        @click="handleEdit(product)"
+        :disabled="loading"
+        >Editar</BaseButton>
+      <BaseButton 
+        variant="danger" 
+        @click="handleDelete(product)"
+        :disabled="loading"
+        >Excluir</BaseButton>
     </div>
+    <div v-if="error" class="mt-2 text-sm text-red-500">{{ error }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Product } from '../../types/Product'
 import BaseButton from '../../components/common/BaseButton.vue'
+import { useProductActions } from '../../composables/useProductActions'
 
 // Props do card de produto
 // Exibe informações e ações do produto
 
-defineProps<{ product: Product }>()
-</script> 
+const props = defineProps<{ product: Product }>()
+
+const { handleDetails, handleEdit, handleDelete, error, loading } = useProductActions()
+</script>
