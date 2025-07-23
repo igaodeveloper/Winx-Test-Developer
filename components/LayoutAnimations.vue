@@ -26,10 +26,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
+import { motion } from 'framer-motion'
 
+interface Props {
+  motionElementClass?: string
+}
+
+const props = defineProps<Props>()
 const scrollElement = ref(null)
 
 onMounted(() => {

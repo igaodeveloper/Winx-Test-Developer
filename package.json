@@ -12,6 +12,7 @@
     "@nuxtjs/color-mode": "^3.5.2",
     "@nuxtjs/composition-api": "^0.34.0",
     "@supabase/supabase-js": "^2.52.0",
+    "@types/vue": "^1.0.31",
     "axios": "^1.10.0",
     "class-validator": "^0.14.2",
     "cors": "^2.8.5",
@@ -26,7 +27,8 @@
     "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "undici": "^6.21.3"
+    "undici": "^6.21.3",
+    "vue3-smooth-dnd": "^0.0.6"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.0",

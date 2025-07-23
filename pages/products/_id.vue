@@ -1,9 +1,54 @@
-<script setup>
-import { onMounted, watch } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import type { Product } from '~/types/Product'
+import { useProductActions } from '~/composables/useProductActions'
+import { useProducts } from '~/composables/useProducts'
 
 const route = useRoute()
 const router = useRouter()
+const { handleDelete: deleteProduct, error, loading } = useProductActions()
+
+const product = ref<Product | null>(null)
+
+// Buscar produto pelo ID
+const fetchProduct = async () => {
+  try {
+    loading.value = true
+    const productsStore = useProducts()
+    const foundProduct = productsStore.products.value.find((p: Product) => p.id === route.params.id)
+    if (!foundProduct) {
+      error.value = 'Produto não encontrado'
+      product.value = null
+      return
+    }
+    product.value = foundProduct
+  } catch (err) {
+    console.error('Erro ao buscar produto:', err)
+    error.value = 'Erro ao buscar produto'
+    product.value = null
+  } finally {
+    loading.value = false
+  }
+}
+
+// Redirecionar após exclusão
+const handleProductDelete = async () => {
+  if (product.value) {
+    await deleteProduct(product.value)
+    router.push('/products')
+  }
+}
+
+// Carregar produto quando a página é montada
+onMounted(() => {
+  fetchProduct()
+})
+
+// Atualizar produto quando o ID muda
+watch(() => route.params.id, () => {
+  fetchProduct()
+})
 </script>
 
 <template>
@@ -24,7 +69,7 @@ const router = useRouter()
         {{ error }}
       </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div v-else-if="product" class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
           <img :src="product.imageUrl" :alt="product.name" class="object-cover w-full h-full" />
         </div>
@@ -37,7 +82,7 @@ const router = useRouter()
             <BaseButton variant="secondary" :to="`/products/${product.id}/edit`">
               Editar
             </BaseButton>
-            <BaseButton variant="danger" @click="handleDelete">
+            <BaseButton variant="danger" @click="handleProductDelete">
               Excluir
             </BaseButton>
           </div>
@@ -46,50 +91,3 @@ const router = useRouter()
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { Product } from '~/types/Product'
-import { useProductActions } from '~/composables/useProductActions'
-import { useRoute, useRouter } from 'vue-router'
-
-const route = useRoute()
-const router = useRouter()
-const { handleDelete: deleteProduct, error, loading } = useProductActions()
-
-const product = ref<Product | null>(null)
-
-// Buscar produto pelo ID
-const fetchProduct = async () => {
-  try {
-    loading.value = true
-    const products = useProducts()
-    product.value = products.products.value.find(p => p.id === route.params.id)
-    if (!product.value) {
-      error.value = 'Produto não encontrado'
-      return
-    }
-  } catch (err) {
-    error.value = 'Erro ao buscar produto'
-  } finally {
-    loading.value = false
-  }
-}
-
-// Redirecionar após exclusão
-const handleProductDelete = async () => {
-  if (product.value) {
-    await useProductActions().handleDelete(product.value)
-    router.push('/products')
-  }
-}
-
-// Carregar produto quando a página é montada
-onMounted(() => {
-  fetchProduct()
-})
-
-// Atualizar produto quando o ID muda
-watch(() => route.params.id, () => {
-  fetchProduct()
-})
-</script>
